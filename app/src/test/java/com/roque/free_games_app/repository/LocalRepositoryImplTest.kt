@@ -1,7 +1,6 @@
 package com.roque.free_games_app.repository
 
 import com.roque.free_games_app.data.local.dao.GamesDao
-import com.roque.free_games_app.data.local.model.GameModel
 import com.roque.free_games_app.mocks.getGameModelMock
 import com.roque.free_games_app.repository.local.LocalRepositoryImpl
 import kotlinx.coroutines.flow.flowOf
@@ -79,16 +78,36 @@ class LocalRepositoryTest {
     }
 
     @Test
-    fun `insertGames should insert games into DAO`(): Unit = runTest {
+    fun `insertGames should return true when all games are inserted successfully`() = runTest {
         // Arrange
         val games = listOf(
             getGameModelMock()
         )
+        val insertedIds = listOf(1L)
+        `when`(dao.insertGames(games)).thenReturn(insertedIds)
 
         // Act
-        localRepository.insertGames(games)
+        val result = localRepository.insertGames(games)
 
         // Assert
+        assertEquals(true, result)
+        verify(dao).insertGames(games)
+    }
+
+    @Test
+    fun `insertGames should return false when not all games are inserted successfully`() = runTest {
+        // Arrange
+        val games = listOf(
+            getGameModelMock()
+        )
+        val insertedIds = listOf<Long>()
+        `when`(dao.insertGames(games)).thenReturn(insertedIds)
+
+        // Act
+        val result = localRepository.insertGames(games)
+
+        // Assert
+        assertEquals(false, result)
         verify(dao).insertGames(games)
     }
 

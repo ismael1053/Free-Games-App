@@ -7,7 +7,8 @@ import com.roque.free_games_app.data.local.model.GameModel
 
 @Database(
     entities = [GameModel::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 

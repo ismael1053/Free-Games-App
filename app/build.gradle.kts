@@ -4,17 +4,17 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.devtools.ksp)
-    id("kotlin-kapt")
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "com.roque.free_games_app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.roque.free_games_app"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -31,14 +31,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -60,17 +65,20 @@ dependencies {
     implementation(libs.retrofit.converte.gson)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.browser)
-    implementation(libs.room.room.runtime)
     testImplementation(libs.testng)
-    ksp(libs.room.room.compiler)
-    implementation(libs.room.room.ktx)
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.constraintlayout.compose)
 
     // Dagger Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+
+    // Room database
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    annotationProcessor(libs.room.compiler)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.io.coil.compose)
@@ -92,8 +100,4 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
-
-kapt {
-    correctErrorTypes = true
 }

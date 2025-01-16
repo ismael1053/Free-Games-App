@@ -4,6 +4,7 @@
     <string name="back_button">Back</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
     <string name="do_you_want_to_exit_the_app">Do you want to exit the app?</string>
     <string name="close_the_app">Close the app</string>
     <string name="game_detail_title">Game Detail</string>

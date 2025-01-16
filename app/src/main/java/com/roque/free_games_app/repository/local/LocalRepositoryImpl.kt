@@ -27,8 +27,9 @@ class LocalRepositoryImpl(
     override fun searchGame(titleGame: String): Flow<List<GameModel>> =
         dao.searchGame("%$titleGame%")
 
-    override suspend fun insertGames(games: List<GameModel>) {
-        dao.insertGames(games)
+    override suspend fun insertGames(games: List<GameModel>): Boolean {
+        val insertedIds = dao.insertGames(games)
+        return insertedIds.size == games.size
     }
 
     override suspend fun deleteGame(id: Int?) {

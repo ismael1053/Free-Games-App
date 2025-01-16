@@ -25,11 +25,7 @@ class MainActivityViewModel @Inject constructor(
     private val _errorState = MutableStateFlow("")
     val errorState: StateFlow<String> get() = _errorState
 
-    init {
-        fetchGameList()
-    }
-
-    private fun fetchGameList() {
+    fun fetchGameList() {
         viewModelScope.launch {
             remoteRepo.getGames()
                 .catch { showError(it) }
@@ -44,8 +40,7 @@ class MainActivityViewModel @Inject constructor(
     private fun insertGames(games: List<GameModel>) {
         viewModelScope.launch {
             try {
-                localRepo.insertGames(games)
-                _isLoadingState.value = false
+                _isLoadingState.value = localRepo.insertGames(games).not()
             } catch (e: Exception) {
                 _errorState.value = e.localizedMessage.orEmpty()
             }
@@ -56,6 +51,10 @@ class MainActivityViewModel @Inject constructor(
         Log.e(ERROR_TAG, throwable.message.orEmpty(), throwable)
         _errorState.value = ""
         _isLoadingState.value = false
+    }
+
+    fun clearError() {
+        _errorState.value = ""
     }
 
     companion object {

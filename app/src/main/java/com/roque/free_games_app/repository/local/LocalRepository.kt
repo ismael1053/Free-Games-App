@@ -15,7 +15,7 @@ interface LocalRepository {
 
     fun searchGame(titleGame: String): Flow<List<GameModel>>
 
-    suspend fun insertGames(games: List<GameModel>)
+    suspend fun insertGames(games: List<GameModel>): Boolean
 
     suspend fun deleteGame(id: Int?)
 }

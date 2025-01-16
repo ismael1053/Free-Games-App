@@ -23,7 +23,7 @@ interface GamesDao {
     fun searchGame(title: String): Flow<List<GameModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGames(games: List<GameModel>)
+    suspend fun insertGames(games: List<GameModel>): List<Long>
 
     @Query("DELETE FROM Games WHERE id = :id")
     suspend fun deleteGame(id: Int?)
